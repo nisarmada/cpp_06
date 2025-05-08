@@ -20,12 +20,31 @@ void printConversionChar(char c) {
 	std::cout << "int: " << i << std::endl;
 
 	float f = static_cast<float>(i);
-	std::cout << "float: " << f << std::endl;
+	std::cout << "float: " << std::fixed << std::setprecision(1) << f << "f" << std::endl;
 
 	double d = static_cast<double>(i);
 	std::cout << "double: " << d << std::endl;
 
 	return ;
+}
+
+void printSpecialCases(const std::string& literal) {
+	std::cout << "char: impossible" << std::endl;
+	std::cout << "int: impossible" << std::endl;
+
+	if (literal[literal.length() - 1] == 'f') {
+		std::cout << "float: " << literal << std::endl;
+		std::cout << "double: " << literal.substr(0, literal.length() - 1) << std::endl;
+	}
+	else {
+		std::cout << "float: " << literal + 'f' << std::endl;
+		std::cout << "double: " << literal << std::endl;
+
+	}
+}
+
+bool isInt(const std::string& literal) {
+	std::stringstream ss(literal);
 }
 
 void ScalarConverter::convert(const std::string& literal) {
@@ -36,8 +55,9 @@ void ScalarConverter::convert(const std::string& literal) {
 	if (literal.length() == 1 && std::isprint(literal[0]) && !std::isdigit(literal[0])) {
 		printConversionChar(literal[0]);
 	}
-
-
+	if (literal == "nan" || literal == "+inf" || literal == "-inff" || literal == "+inff" \
+		|| literal == "-inf" || literal == "nanf") {
+			printSpecialCases(literal);
+	}
+	if (isInt(literal))
 }
-
-//fix char it should be 1 char long and we dont need to check for '
