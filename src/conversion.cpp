@@ -45,6 +45,36 @@ void printSpecialCases(const std::string& literal) {
 
 bool isInt(const std::string& literal) {
 	std::stringstream ss(literal);
+	int number;
+
+	ss >> number;
+
+	return ((!ss.fail() && ss.eof()));
+}
+
+void printInt(const std::string& literal) {
+	int number;
+
+	try {
+		number = std::stoi(literal);
+	}
+	catch (const std::exception &e) {
+		std::cout << "Not an int" << std::endl;
+	}
+	if (number >= 32 && number <= 126) {
+		char c = static_cast<char>(number);
+		std::cout << "char: " << c << std::endl;
+	}
+	else {
+		std::cout << "char: impossible" << std::endl;
+	}
+	std::cout << "int: " << number << std::endl;
+	
+	float f = static_cast<float>(number);
+	std::cout << "float: " << std::fixed << std::setprecision(1) << f << "f" << std::endl;
+
+	double b = static_cast<double>(number);
+	std::cout << "double: " << b << std::endl;
 }
 
 void ScalarConverter::convert(const std::string& literal) {
@@ -59,5 +89,8 @@ void ScalarConverter::convert(const std::string& literal) {
 		|| literal == "-inf" || literal == "nanf") {
 			printSpecialCases(literal);
 	}
-	if (isInt(literal))
+	if (isInt(literal)) {
+		printInt(literal);
+	}
+	
 }
