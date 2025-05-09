@@ -13,6 +13,7 @@ ScalarConverter& ScalarConverter::operator=(const ScalarConverter& other) {
 	return (*this);
 }
 
+
 void printConversionChar(char c) {
 	int i = c;
 
@@ -62,16 +63,13 @@ bool isInt(const std::string& literal) {
 void printInt(const std::string& literal) {
 	int number;
 
-	try {
-		number = std::stoi(literal);
-	}
-	catch (const std::exception &e) {
-		std::cout << "Not an int" << std::endl;
-	}
-	if (number >= 0 && number <= 127) {
+	number = std::stoi(literal);
+	if (number >= 0 && number < 127) {
 		char c = static_cast<char>(number);
 		std::cout << "char: " << c << std::endl;
 	}
+	else if (number > 126 && number <= 132)
+		std::cout << "char: non displayable" << std::endl;
 	else {
 		std::cout << "char: impossible" << std::endl;
 	}
@@ -100,7 +98,10 @@ bool isDouble(const std::string& literal) {
 	if (literal.back() == 'f')
 		return false;
 	try {
-		std::stod(literal);
+		size_t pos = 0;
+		std::stod(literal, &pos);
+		if (pos != literal.length())
+			return false;
 		return (true);
 	}
 	catch (std::exception& e) {
@@ -181,6 +182,8 @@ void ScalarConverter::convert(const std::string& literal) {
 }
 
 
-//can add extra checks if char is possible but not printable
+//can add extra checks if char is possible but not printable : fixed
 //for test double ./conversion 1e308 we get float: inff, might need to look at that
 //also ask ellen about special cases cause I'm not casting at all
+//./conversion 23231323332132123123g : fixed
+//split it in normal sized files this is ridiculous
